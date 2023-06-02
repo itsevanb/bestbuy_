@@ -1,3 +1,4 @@
+
 class Product:
     def __init__(self, name, price, quantity):
         if not name or price < 0 or quantity < 0:
@@ -36,19 +37,28 @@ class Product:
             self.deactivate()
         return self.price * quantity
     
-def main():
-    bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-    mac = Product("MacBook Air M2", price=1450, quantity=100)
+class NonStockableProduct(Product):
+    def __init__(self, name, price):
+        super().__init__(name, price, quantity=float('inf'))
+    
+    def show(self):
+        print(f'{self.name} - ${self.price} - Non-stockable product')
+    
+    def buy(self, quantity):
+        if quantity >1:
+            raise Exception('Cannot buy more than 1')
+        return self.price * quantity
+    
+class LimitedProduct(Product):
+    def __init__(self, name,  price, max_quantity):
+        super().__init__(name, price, quantity=max_quantity)
+        
+    def show(self):
+        print(f'{self.name} - ${self.price} - Limited product, max quantity: {self.quantity}')
 
-    print(bose.buy(50))
-    print(mac.buy(100))
-    print(mac.is_active())
-
-    bose.show()
-    mac.show()
-
-    bose.set_quantity(1000)
-    bose.show()
-
-if __name__ == "__main__":
-    main()
+    def buy(self, quantity):
+        if quantity > self.quantity:
+            raise Exception('Cannot buy more than max quantity')
+        self.quantity -= quantity
+        return self.price * quantity
+    

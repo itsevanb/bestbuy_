@@ -1,4 +1,4 @@
-from product import Product
+from product import NonStockableProduct
 
 class Store:
     def __init__(self):
@@ -8,11 +8,11 @@ class Store:
         self.products.append(product)
 
     def remove_product(self, product):
-         if product in self.products:
-             self.products.remove(product)
+        if product in self.products:
+            self.products.remove(product)
     
     def get_total_quantity(self):
-        return int(sum([product.get_quantity() for product in self.products]))
+        return int(sum([product.get_quantity() for product in self.products if not isinstance(product, NonStockableProduct)]))
     
     def get_all_products(self):
         return [product for product in self.products if product.is_active()]
@@ -32,19 +32,3 @@ class Store:
                 return product
         raise Exception('Product not found')
 
-def main():
-    products = [Product("MacBook Air M2", price=1450, quantity=100),
-                Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                Product("Google Pixel 7", price=500, quantity=250),
-               ]
-
-    store = Store()
-    for product in products:
-        store.add_products(product)
-        
-    active_products = store.get_all_products()
-    print(store.get_total_quantity())
-    print(store.order([(active_products[0], 1), (active_products[1], 2)]))
-
-if __name__ == "__main__":
-    main()
