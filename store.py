@@ -19,11 +19,12 @@ class Store:
     
     def order(self, shopping_list):
         total_price = 0
-        for product, quantity in shopping_list:
+        for item in shopping_list:
+            product, quantity = item
             if product in self.products and product.is_active():
                 total_price += product.buy(quantity)
             else:
-                raise Exception('Product is not available for purchase')
+                raise Exception('Product not available for purchase')
         return total_price
         
     def get_product_by_name(self, name):

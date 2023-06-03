@@ -1,19 +1,32 @@
 from store import Store
 from product import Product, NonStockableProduct, LimitedProduct
+from promotions import SecondItemHalfPrice, BuyTwoGetOneFree, PercentDiscount
 
 # setup initial stock of inventory
 product_list = [ Product("MacBook Air M2", price=1450, quantity=100),
                  Product("Bose QuietComfort Earbuds", price=250, quantity=500),
                  Product("Google Pixel 7", price=500, quantity=250),
                  NonStockableProduct("Windows License", price=125),
-                 LimitedProduct("Shipping", price=10, max_quantity=1)
+                 LimitedProduct("Shipping", price=10, max_quantity=250)
                ]
+
+# Create promotion catalog
+second_half_price = SecondItemHalfPrice()
+third_one_free = BuyTwoGetOneFree()
+thirty_percent = PercentDiscount(30) #Discount % argument
+
+# Add promotions to products
+product_list[0].set_promotion(second_half_price)
+product_list[1].set_promotion(third_one_free)
+product_list[3].set_promotion(thirty_percent)
+
 best_buy = Store()
 for product in product_list:
     best_buy.add_products(product)
 
 
 def start(store):
+    "Main program loop"
     while True:
         print('Welcome to our store! Please select an option: ')
         print('1. List all products in store')
