@@ -25,5 +25,5 @@ This project is completed and fully functional.
 Potential future improvements could include integrating a database for persistent storage of product data, adding support for more types of products and promotions, and developing a web-based user interface.
 
 ## Author
-Evam Betley
+Evan Betley
 
